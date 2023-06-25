@@ -27,8 +27,10 @@ export const NodeCard = ({
     <div className="group flex flex-col rounded bg-white/20 p-2">
       {isCurrent && <div className="text-xs opacity-80">Current</div>}
       <div className="flex flex-row items-start gap-2">
-        <div className="flex-1 font-bold">{node?.metadata.title}</div>
-        <div className="mt-1 flex flex-row gap-1">
+        <div className="flex-1 truncate font-bold" title={node?.metadata.title}>
+          {node?.metadata.title}
+        </div>
+        <div className="mt-1 flex shrink-0 flex-row gap-1">
           {isLoading && <Loader2 className="h-4 w-4 animate-spin opacity-50" />}
           {!!error && (
             <div className="text-xs text-red-500" title={error.message}>

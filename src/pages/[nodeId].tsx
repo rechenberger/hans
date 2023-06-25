@@ -34,7 +34,7 @@ export default function Page() {
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           {!!node && <NodeCard node={node} isCurrent={true} />}
           <hr className="w-full border-t-black/20" />
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
             {children?.map((child) => (
               <NodeCard key={child.id} node={child} isCurrent={false} />
             ))}
