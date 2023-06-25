@@ -26,4 +26,6 @@ model Node {
     children Node[] @relation("NodeParentChild")
 
     @@index([parentId])
+    @@index([featured, createdAt])
+    @@index([parentId, featured, createdAt])
 }

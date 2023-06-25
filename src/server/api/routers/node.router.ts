@@ -35,16 +35,17 @@ export const nodeRouter = createTRPCRouter({
     }),
 
   getStarters: publicProcedure.query(async ({ ctx }) => {
-    const startsRaw = await ctx.prisma.node.findMany({
+    const communityRaw = await ctx.prisma.node.findMany({
       where: {
         parentId: null,
+        featured: false,
       },
       orderBy: {
         createdAt: 'desc',
       },
       take: 12,
     })
-    const starters = flatMap(startsRaw, (start) => {
+    const community = flatMap(communityRaw, (start) => {
       const parsed = nodeMetadataSchema.safeParse(start.metadata)
       if (!parsed.success) {
         return []
@@ -55,7 +56,30 @@ export const nodeRouter = createTRPCRouter({
       }
       return [node]
     })
-    return starters
+
+    const featuredRaw = await ctx.prisma.node.findMany({
+      where: {
+        featured: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 6,
+    })
+
+    const featured = flatMap(featuredRaw, (start) => {
+      const parsed = nodeMetadataSchema.safeParse(start.metadata)
+      if (!parsed.success) {
+        return []
+      }
+      const node = {
+        ...start,
+        metadata: parsed.data,
+      }
+      return [node]
+    })
+
+    return { community, featured }
   }),
 
   getChildren: publicProcedure
@@ -141,5 +165,23 @@ export const nodeRouter = createTRPCRouter({
         },
       })
       return imageUrl
+    }),
+
+  setFeatured: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        featured: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.node.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          featured: input.featured,
+        },
+      })
     }),
 })

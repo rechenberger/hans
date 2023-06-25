@@ -1,4 +1,4 @@
-import { ArrowRight, Edit, Loader2 } from 'lucide-react'
+import { ArrowRight, Edit, Loader2, Star } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { type ReactNode } from 'react'
@@ -49,6 +49,16 @@ export const NodeCard = ({
 
   const imageUrl = node.metadata.imageUrl || imageUrlLazy
 
+  const { mutate: setFeatured } = api.node.setFeatured.useMutation({
+    onSuccess: () => {
+      trpc.node.getChildren.invalidate()
+      trpc.node.getStarters.invalidate()
+      trpc.node.get.invalidate()
+    },
+  })
+
+  const showSetFeatured = false
+
   return (
     <div className="group flex flex-col rounded bg-white/20 p-2">
       {top}
@@ -63,6 +73,22 @@ export const NodeCard = ({
             <div className="text-xs text-red-500" title={error.message}>
               X
             </div>
+          )}
+          {showSetFeatured && (
+            <button
+              onClick={() =>
+                setFeatured({
+                  id: node.id,
+                  featured: !node.featured,
+                })
+              }
+            >
+              {node.featured ? (
+                <Star className="h-4 w-4 text-amber-400" />
+              ) : (
+                <Star className="h-4 w-4" />
+              )}
+            </button>
           )}
           {showCustomize && (
             <Link
