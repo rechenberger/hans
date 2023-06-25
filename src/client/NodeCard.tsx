@@ -24,9 +24,7 @@ export const NodeCard = ({
 
   return (
     <div className="flex flex-col rounded bg-white/20 p-2">
-      {isCurrent && (
-        <div className="text-xs opacity-80">Your current items</div>
-      )}
+      {isCurrent && <div className="text-xs opacity-80">Your current item</div>}
       <div className="flex flex-row items-center gap-2">
         <div className="flex-1 font-bold">{node?.metadata.title}</div>
         {isLoading && <Loader2 className="h-4 w-4 animate-spin opacity-50" />}
