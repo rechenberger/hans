@@ -54,8 +54,13 @@ export default function Page() {
         {!!node && <NodeCard node={node} isCurrent={true} />}
         <hr className="w-full border-t-black/20" />
         <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
-          {children?.map((child) => (
-            <NodeCard key={child.id} node={child} isCurrent={false} />
+          {children?.map((child, idx) => (
+            <NodeCard
+              key={child.id}
+              node={child}
+              isCurrent={false}
+              top={<div className="text-xs">Option #{idx + 1}</div>}
+            />
           ))}
         </div>
       </MainLayout>
