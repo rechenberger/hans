@@ -5,12 +5,16 @@ import { openai } from '../ai/openai'
 import { getNode } from './getNode'
 import { nodeMetadataSchema } from './nodeMetadataSchema'
 
+export const DEFAULT_SYSTEM_MESSAGE = `The user is playing a video game. The player sends you the item they have in their inventory. You will give the player 3 choices of what to trade the item for. It should be a reasonable trade with roughly equal value. Use the GenerateOptions function.`
+
 export const generateChildren = async ({
   prisma,
   id,
+  systemMessage = DEFAULT_SYSTEM_MESSAGE,
 }: {
   prisma: PrismaClient
   id: string
+  systemMessage?: string
 }) => {
   const node = await getNode({ prisma, id })
 
@@ -21,7 +25,7 @@ export const generateChildren = async ({
       messages: [
         {
           role: 'system',
-          content: `The user is playing a video game. The player sends you the item they have in their inventory. You will give the player 3 choices of what to trade the item for. It should be a reasonable trade with roughly equal value. Use the GenerateItem function.`,
+          content: systemMessage,
         },
         {
           role: 'user',
@@ -32,8 +36,8 @@ export const generateChildren = async ({
       function_call: 'auto',
       functions: [
         {
-          name: 'GenerateItem',
-          description: 'Generate an item',
+          name: 'GenerateOptions',
+          description: 'Generate a the players next options',
           parameters: {
             type: 'object',
             properties: {
@@ -44,11 +48,12 @@ export const generateChildren = async ({
                   properties: {
                     title: {
                       type: 'string',
-                      description: 'The title of the item',
+                      description: 'The title of the next option',
                     },
                     description: {
                       type: 'string',
-                      description: 'A very short description of the item',
+                      description:
+                        'A very short description of the next option',
                     },
                   },
                 },
@@ -78,7 +83,7 @@ export const generateChildren = async ({
       throw new Error('No function call returned from OpenAI')
     }
 
-    if (message.function_call.name !== 'GenerateItem') {
+    if (message.function_call.name !== 'GenerateOptions') {
       throw new Error(
         `Unexpected function call name: ${
           message.function_call.name || 'undefined'
