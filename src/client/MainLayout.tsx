@@ -16,7 +16,7 @@ export const MainLayout = ({
         <link rel="icon" href="/hanns.png" />
       </Head>
       <div className="flex min-h-screen flex-col items-center justify-start bg-gradient-to-br from-cyan-500 to-amber-600">
-        <div className="container flex flex-row py-8">
+        <div className="container flex flex-row px-4 py-8">
           <Link
             href="/"
             className="text-xl font-extrabold tracking-tight text-white"
