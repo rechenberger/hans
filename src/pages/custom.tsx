@@ -55,6 +55,14 @@ export default function Page() {
           />
         </label>
         <label className="flex flex-col">
+          <div>Image Description</div>
+          <input
+            name="imageDescription"
+            className="border bg-transparent p-2"
+            defaultValue={template?.metadata.imageDescription}
+          />
+        </label>
+        <label className="flex flex-col">
           <div>System Message</div>
           <textarea
             name="systemMessage"
