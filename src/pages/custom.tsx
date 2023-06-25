@@ -37,7 +37,16 @@ export default function Page() {
         }}
       >
         <label className="flex flex-col">
-          <div>Title</div>
+          <div>System Message</div>
+          <textarea
+            name="systemMessage"
+            className="border bg-transparent p-2"
+            defaultValue={template?.metadata.systemMessage}
+            rows={10}
+          />
+        </label>
+        <label className="flex flex-col">
+          <div>First Title</div>
           <input
             name="title"
             className="border bg-transparent p-2"
@@ -46,7 +55,7 @@ export default function Page() {
           />
         </label>
         <label className="flex flex-col">
-          <div>Description</div>
+          <div>First Description</div>
           <textarea
             name="description"
             className="border bg-transparent p-2"
@@ -56,20 +65,11 @@ export default function Page() {
           />
         </label>
         <label className="flex flex-col">
-          <div>Image Description</div>
+          <div>First Image Description</div>
           <input
             name="imageDescription"
             className="border bg-transparent p-2"
             defaultValue={template?.metadata.imageDescription}
-          />
-        </label>
-        <label className="flex flex-col">
-          <div>System Message</div>
-          <textarea
-            name="systemMessage"
-            className="border bg-transparent p-2"
-            defaultValue={template?.metadata.systemMessage}
-            rows={10}
           />
         </label>
         <button
