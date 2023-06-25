@@ -25,7 +25,7 @@ export const MainLayout = ({
           </Link>
           <div className="flex-1" />
         </div>
-        <main className="container flex flex-col items-center justify-center gap-8 px-4 py-16 ">
+        <main className="container flex flex-col items-center justify-center gap-4 px-4 py-16 ">
           {children}
         </main>
       </div>

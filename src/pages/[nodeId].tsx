@@ -38,22 +38,34 @@ export default function Page() {
   return (
     <>
       <MainLayout title={title}>
-        {!!parent && (
-          <NodeCard
-            node={parent}
-            isCurrent={false}
-            tiny
-            top={
-              <Link href={`/${parent.id}`} className="flex flex-row gap-1">
-                <ArrowLeft className="h-4 w-4 opacity-50 group-hover:opacity-100" />
-                <div className="text-xs">Go Back</div>
-              </Link>
-            }
-          />
-        )}
-        {!!node && <NodeCard node={node} isCurrent={true} />}
-        <hr className="w-full border-t-black/20" />
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
+        <div className="grid max-w-5xl grid-cols-1 items-start gap-2 gap-y-4 md:grid-cols-3">
+          {parent && (
+            <>
+              <div className="hidden md:flex" />
+              <NodeCard
+                node={parent}
+                isCurrent={false}
+                tiny
+                top={
+                  <Link href={`/${parent.id}`} className="flex flex-row gap-1">
+                    <ArrowLeft className="h-4 w-4 opacity-50 group-hover:opacity-100" />
+                    <div className="text-xs">Go Back</div>
+                  </Link>
+                }
+              />
+              <div className="hidden md:flex" />
+            </>
+          )}
+          {!!node && (
+            <>
+              <div className="hidden md:flex" />
+              <NodeCard node={node} isCurrent={true} />
+              <div className="hidden md:flex" />
+            </>
+          )}
+        </div>
+        {/* <hr className="w-full border-t-black/20" /> */}
+        <div className="grid max-w-5xl grid-cols-2 gap-2 md:grid-cols-3">
           {children?.map((child, idx) => (
             <NodeCard
               key={child.id}
