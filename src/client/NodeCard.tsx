@@ -10,9 +10,17 @@ export const NodeCard = ({
   node: Node
   isCurrent: boolean
 }) => {
-  const { isLoading, error } = api.node.ensureChildren.useQuery({
-    id: node.id,
-  })
+  const trpc = api.useContext()
+  const { isLoading, error } = api.node.ensureChildren.useQuery(
+    {
+      id: node.id,
+    },
+    {
+      onSuccess: () => {
+        trpc.node.getChildren.invalidate()
+      },
+    }
+  )
 
   return (
     <div className="flex flex-col rounded bg-white/20 p-2">

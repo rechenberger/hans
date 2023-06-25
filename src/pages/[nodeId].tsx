@@ -8,13 +8,12 @@ export default function Page() {
 
   const title = node?.metadata.title
 
-  const trpc = api.useContext()
-
-  const { mutate: generateChildren } = api.node.generateChildren.useMutation({
-    onSuccess: () => {
-      trpc.node.invalidate()
-    },
-  })
+  // const trpc = api.useContext()
+  // const { mutate: generateChildren } = api.node.generateChildren.useMutation({
+  //   onSuccess: () => {
+  //     trpc.node.getChildren.invalidate()
+  //   },
+  // })
 
   const { data: children } = api.node.getChildren.useQuery(
     {
