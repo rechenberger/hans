@@ -6,6 +6,7 @@ import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 
 const nodeMetadataSchema = z.object({
   title: z.string(),
+  description: z.string(),
 })
 
 type NodeMetadata = z.infer<typeof nodeMetadataSchema>
@@ -16,6 +17,7 @@ export const nodeRouter = createTRPCRouter({
       data: {
         metadata: {
           title: 'a simple stone',
+          description: 'a simple gray stone found on the side of the road',
         } satisfies NodeMetadata,
       },
     })
@@ -49,12 +51,12 @@ export const nodeRouter = createTRPCRouter({
           messages: [
             {
               role: 'system',
-              content: `The user is playing a video game. The player has a single item in their inventory: "${node.metadata.title}". You will give the player 3 choices of what to trade the item for. It should be a reasonable trade. Use the GenerateItem function.`,
+              content: `The user is playing a video game. The player sends you the item they have in their inventory. You will give the player 3 choices of what to trade the item for. It should be a reasonable trade. Use the GenerateItem function.`,
             },
-            // {
-            //   role: 'user',
-            //   content: `${node.metadata.title}`,
-            // },
+            {
+              role: 'user',
+              content: JSON.stringify(node.metadata),
+            },
           ],
           function_call: 'auto',
           functions: [
@@ -67,7 +69,17 @@ export const nodeRouter = createTRPCRouter({
                   items: {
                     type: 'array',
                     items: {
-                      type: 'string',
+                      type: 'object',
+                      properties: {
+                        title: {
+                          type: 'string',
+                          description: 'The title of the item',
+                        },
+                        description: {
+                          type: 'string',
+                          description: 'A very short description of the item',
+                        },
+                      },
                     },
                   },
                 },
@@ -80,19 +92,45 @@ export const nodeRouter = createTRPCRouter({
           throw new Error('No message returned from OpenAI')
         }
 
-        console.log({ message })
+        // console.log({ message })
 
         const schema = z.object({
-          items: z.array(z.string()),
+          items: z.array(
+            z.object({
+              title: z.string(),
+              description: z.string(),
+            })
+          ),
         })
 
-        if (!message.content) {
-          throw new Error('No content returned from OpenAI')
+        if (!message.function_call) {
+          throw new Error('No function call returned from OpenAI')
         }
 
-        const { items } = schema.parse(JSON.parse(message.content))
+        if (message.function_call.name !== 'GenerateItem') {
+          throw new Error(
+            `Unexpected function call name: ${
+              message.function_call.name || 'undefined'
+            }`
+          )
+        }
+
+        if (!message.function_call.arguments) {
+          throw new Error('No function call arguments returned from OpenAI')
+        }
+
+        const { items } = schema.parse(
+          JSON.parse(message.function_call.arguments)
+        )
 
         console.log({ items })
+
+        await ctx.prisma.node.createMany({
+          data: items.map((item) => ({
+            metadata: nodeMetadataSchema.parse(item),
+            parentId: node.id,
+          })),
+        })
       } catch (error: any) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         const openAIError = error?.response?.data?.error
