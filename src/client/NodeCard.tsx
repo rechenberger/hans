@@ -24,7 +24,8 @@ export const NodeCard = ({
     }
   )
 
-  const shouldHaveImage = !!node.metadata.imageDescription
+  const shouldHaveImage =
+    !!node.metadata.imageDescription || !!node.metadata.description
 
   const { data: imageUrlLazy } = api.node.getImageUrl.useQuery(
     {

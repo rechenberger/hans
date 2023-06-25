@@ -118,11 +118,13 @@ export const nodeRouter = createTRPCRouter({
       if (node.metadata.imageUrl) {
         return node.metadata.imageUrl
       }
-      if (!node.metadata.imageDescription) {
+      const imageDescription =
+        node.metadata.imageDescription || node.metadata.description
+      if (!imageDescription) {
         return null
       }
       const imageUrl = await generateImage({
-        prompt: node.metadata.imageDescription,
+        prompt: imageDescription,
       })
       await ctx.prisma.node.update({
         where: {
