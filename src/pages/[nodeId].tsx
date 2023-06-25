@@ -38,7 +38,7 @@ export default function Page() {
   return (
     <>
       <MainLayout title={title}>
-        <div className="grid max-w-5xl grid-cols-1 items-start gap-2 gap-y-4 md:grid-cols-3">
+        <div className="grid w-full max-w-5xl grid-cols-1 items-start gap-2 gap-y-4 md:grid-cols-3">
           {parent && (
             <>
               <div className="hidden md:flex" />
@@ -65,7 +65,7 @@ export default function Page() {
           )}
         </div>
         {/* <hr className="w-full border-t-black/20" /> */}
-        <div className="grid max-w-5xl grid-cols-2 gap-2 md:grid-cols-3">
+        <div className="grid w-full max-w-5xl grid-cols-2 gap-2 md:grid-cols-3">
           {children?.map((child, idx) => (
             <NodeCard
               key={child.id}

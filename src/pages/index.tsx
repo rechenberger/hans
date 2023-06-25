@@ -35,7 +35,7 @@ export default function Page() {
             <h3 className="text-2xl font-bold">Custom →</h3>
           </Link>
         </div>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid w-full max-w-5xl grid-cols-2 gap-2 md:grid-cols-3">
           {starters?.map((node) => (
             <NodeCard key={node.id} node={node} isCurrent={false} />
           ))}
