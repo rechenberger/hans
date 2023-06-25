@@ -43,6 +43,7 @@ export default function Page() {
             name="title"
             className="border bg-transparent p-2"
             defaultValue={template?.metadata.title}
+            required
           />
         </label>
         <label className="flex flex-col">
@@ -52,6 +53,7 @@ export default function Page() {
             className="border bg-transparent p-2"
             defaultValue={template?.metadata.description}
             rows={2}
+            required
           />
         </label>
         <label className="flex flex-col">
