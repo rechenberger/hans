@@ -4,6 +4,16 @@ import { api } from '~/utils/api'
 
 export default function Page() {
   const router = useRouter()
+  const { templateId } = router.query
+
+  const { data: template } = api.node.get.useQuery(
+    {
+      id: templateId as string,
+    },
+    {
+      enabled: !!templateId,
+    }
+  )
 
   const { mutate: start } = api.node.start.useMutation({
     onSuccess: async (data) => {
@@ -34,13 +44,19 @@ export default function Page() {
           >
             <label className="flex flex-col">
               <div>Title</div>
-              <input name="title" className="border bg-transparent p-2" />
+              <input
+                name="title"
+                className="border bg-transparent p-2"
+                defaultValue={template?.metadata.title}
+              />
             </label>
             <label className="flex flex-col">
               <div>Description</div>
               <textarea
                 name="description"
                 className="border bg-transparent p-2"
+                defaultValue={template?.metadata.description}
+                rows={2}
               />
             </label>
             <label className="flex flex-col">
@@ -48,6 +64,8 @@ export default function Page() {
               <textarea
                 name="systemMessage"
                 className="border bg-transparent p-2"
+                defaultValue={template?.metadata.systemMessage}
+                rows={10}
               />
             </label>
             <button

@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react'
+import { Edit, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { api, type RouterOutputs } from '~/utils/api'
 
@@ -33,6 +33,9 @@ export const NodeCard = ({
             X
           </div>
         )}
+        <Link className="text-xs" href={`/custom?templateId=${node.id}`}>
+          <Edit className="h-4 w-4" />
+        </Link>
       </div>
       <div className="text-xs italic opacity-80">
         {node?.metadata.description}
