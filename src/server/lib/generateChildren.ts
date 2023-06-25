@@ -28,7 +28,7 @@ export const generateChildren = async ({
         {
           role: 'user',
           content: JSON.stringify(
-            pick(node.metadata, ['title', 'description'])
+            pick(node.metadata, ['title', 'description', 'imageDescription'])
           ),
         },
       ],
