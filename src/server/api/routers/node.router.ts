@@ -62,9 +62,14 @@ export const nodeRouter = createTRPCRouter({
               name: 'GenerateItem',
               description: 'Generate an item',
               parameters: {
-                type: 'array',
-                items: {
-                  type: 'string',
+                type: 'object',
+                properties: {
+                  items: {
+                    type: 'array',
+                    items: {
+                      type: 'string',
+                    },
+                  },
                 },
               },
             },
