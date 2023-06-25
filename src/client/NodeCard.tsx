@@ -1,4 +1,4 @@
-import { Edit, Loader2 } from 'lucide-react'
+import { ArrowRight, Edit, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { type ReactNode } from 'react'
@@ -95,6 +95,12 @@ export const NodeCard = ({
       {!tiny && (
         <div className="text-xs italic opacity-80">
           {node?.metadata.description}
+        </div>
+      )}
+      {!tiny && isCurrent && (
+        <div className="mt-4 flex flex-row gap-1 text-xs italic opacity-80">
+          <ArrowRight className="mt-0.5 h-3 w-3 shrink-0" />
+          <div>{node?.metadata.descriptionConsequences}</div>
         </div>
       )}
       <div className="flex-1" />

@@ -28,7 +28,12 @@ export const generateChildren = async ({
         {
           role: 'user',
           content: JSON.stringify(
-            pick(node.metadata, ['title', 'description', 'imageDescription'])
+            pick(node.metadata, [
+              'title',
+              'description',
+              'imageDescription',
+              'descriptionConsequences',
+            ])
           ),
         },
       ],
@@ -59,7 +64,13 @@ export const generateChildren = async ({
                       description:
                         'Short image description of the next option. like "a cat sitting on a table"',
                     },
+                    descriptionConsequences: {
+                      type: 'string',
+                      description:
+                        'What happens if the player chooses this option? Continue the story.',
+                    },
                   },
+                  required: ['title', 'description'],
                 },
               },
             },
