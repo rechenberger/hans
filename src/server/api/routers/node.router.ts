@@ -1,4 +1,7 @@
+import { PrismaClient } from '@prisma/client'
+import { first } from 'lodash-es'
 import { z } from 'zod'
+import { openai } from '~/server/ai/openai'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 
 const nodeMetadataSchema = z.object({
@@ -27,12 +30,43 @@ export const nodeRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const node = await ctx.prisma.node.findUniqueOrThrow({
-        where: {
-          id: input.id,
-        },
+      const node = await getNode({ prisma: ctx.prisma, id: input.id })
+      return node
+    }),
+
+  generateChildren: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const node = await getNode({ prisma: ctx.prisma, id: input.id })
+
+      const response = await openai.createChatCompletion({
+        model: 'gpt-3.5-turbo-0613',
+        messages: [{ role: 'user', content: node.metadata.title }],
+        // function_call: 'auto',
       })
 
-      return { ...node, metadata: nodeMetadataSchema.parse(node.metadata) }
+      const message = first(response.data.choices)?.message
+
+      console.log({ message })
     }),
 })
+
+const getNode = async ({
+  prisma,
+  id,
+}: {
+  prisma: PrismaClient
+  id: string
+}) => {
+  const node = await prisma.node.findUniqueOrThrow({
+    where: {
+      id,
+    },
+  })
+
+  return { ...node, metadata: nodeMetadataSchema.parse(node.metadata) }
+}
