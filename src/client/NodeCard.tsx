@@ -23,19 +23,21 @@ export const NodeCard = ({
   )
 
   return (
-    <div className="flex flex-col rounded bg-white/20 p-2">
-      {isCurrent && <div className="text-xs opacity-80">Your current item</div>}
-      <div className="flex flex-row items-center gap-2">
+    <div className="group flex flex-col rounded bg-white/20 p-2">
+      {isCurrent && <div className="text-xs opacity-80">Current</div>}
+      <div className="flex flex-row items-start gap-2">
         <div className="flex-1 font-bold">{node?.metadata.title}</div>
-        {isLoading && <Loader2 className="h-4 w-4 animate-spin opacity-50" />}
-        {!!error && (
-          <div className="text-xs text-red-500" title={error.message}>
-            X
-          </div>
-        )}
-        <Link className="text-xs" href={`/custom?templateId=${node.id}`}>
-          <Edit className="h-4 w-4" />
-        </Link>
+        <div className="mt-1 flex flex-row gap-1">
+          {isLoading && <Loader2 className="h-4 w-4 animate-spin opacity-50" />}
+          {!!error && (
+            <div className="text-xs text-red-500" title={error.message}>
+              X
+            </div>
+          )}
+          <Link className="text-xs" href={`/custom?templateId=${node.id}`}>
+            <Edit className="h-4 w-4 opacity-50 hover:opacity-100" />
+          </Link>
+        </div>
       </div>
       <div className="text-xs italic opacity-80">
         {node?.metadata.description}
