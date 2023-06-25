@@ -5,8 +5,7 @@ import { generateImage } from '../ai/generateImage'
 import { openai } from '../ai/openai'
 import { getNode } from './getNode'
 import { nodeMetadataSchema } from './nodeMetadataSchema'
-
-export const DEFAULT_SYSTEM_MESSAGE = `The user is playing a video game. The player sends you the item they have in their inventory. You will give the player 3 choices of what to trade the item for. It should be a reasonable trade with roughly equal value. Use the GenerateOptions function.`
+import { DEFAULT_SYSTEM_MESSAGE } from '~/config'
 
 export const generateChildren = async ({
   prisma,

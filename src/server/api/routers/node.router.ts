@@ -1,5 +1,6 @@
 import { flatMap, map } from 'lodash-es'
 import { z } from 'zod'
+import { DEFAULT_START_NODE } from '~/config'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 import { generateChildren } from '~/server/lib/generateChildren'
 import { getNode } from '~/server/lib/getNode'
@@ -14,12 +15,7 @@ export const nodeRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const node = await ctx.prisma.node.create({
         data: {
-          metadata:
-            input ??
-            ({
-              title: 'a simple stone',
-              description: 'a simple gray stone found on the side of the road',
-            } satisfies NodeMetadata),
+          metadata: input ?? (DEFAULT_START_NODE satisfies NodeMetadata),
         },
       })
 

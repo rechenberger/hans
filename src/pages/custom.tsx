@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { MainLayout } from '~/client/MainLayout'
+import { DEFAULT_SYSTEM_MESSAGE } from '~/config'
 import { api } from '~/utils/api'
 
 export default function Page() {
@@ -58,7 +59,9 @@ export default function Page() {
           <textarea
             name="systemMessage"
             className="border bg-transparent p-2"
-            defaultValue={template?.metadata.systemMessage}
+            defaultValue={
+              template?.metadata.systemMessage || DEFAULT_SYSTEM_MESSAGE
+            }
             rows={10}
           />
         </label>
