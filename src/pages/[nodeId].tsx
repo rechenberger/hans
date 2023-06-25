@@ -1,3 +1,4 @@
+import { orderBy } from 'lodash-es'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { MainLayout } from '~/client/MainLayout'
@@ -66,14 +67,16 @@ export default function Page() {
         </div>
         {/* <hr className="w-full border-t-black/20" /> */}
         <div className="grid w-full max-w-5xl grid-cols-2 gap-2 md:grid-cols-3">
-          {children?.map((child, idx) => (
-            <NodeCard
-              key={child.id}
-              node={child}
-              isCurrent={false}
-              top={<div className="text-xs">Option #{idx + 1}</div>}
-            />
-          ))}
+          {orderBy(children, (child) => child.createdAt, 'asc')?.map(
+            (child, idx) => (
+              <NodeCard
+                key={child.id}
+                node={child}
+                isCurrent={false}
+                top={<div className="text-xs">Option #{idx + 1}</div>}
+              />
+            )
+          )}
         </div>
       </MainLayout>
     </>
