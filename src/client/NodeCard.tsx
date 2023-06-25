@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { type RouterOutputs } from '~/utils/api'
+import { api, type RouterOutputs } from '~/utils/api'
 
 type Node = RouterOutputs['node']['get']
 export const NodeCard = ({
@@ -9,6 +9,10 @@ export const NodeCard = ({
   node: Node
   isCurrent: boolean
 }) => {
+  const { isLoading, error } = api.node.ensureChildren.useQuery({
+    id: node.id,
+  })
+
   return (
     <div className="flex flex-col rounded bg-white/20 p-2">
       {isCurrent && (
@@ -20,12 +24,17 @@ export const NodeCard = ({
       </div>
       <div className="flex-1" />
       {!isCurrent && (
-        <Link
-          className="mt-2 rounded bg-black/20 px-2 py-1 text-sm"
-          href={`/${node.id}`}
-        >
-          Trade
-        </Link>
+        <div className="mt-2 flex flex-row items-center gap-2">
+          <Link
+            className="rounded bg-black/20 px-2 py-1 text-sm"
+            href={`/${node.id}`}
+          >
+            Trade
+          </Link>
+          <div className="flex-1 " />
+          {isLoading && <div className="text-xs">...</div>}
+          {!!error && <div className="text-xs">X</div>}
+        </div>
       )}
     </div>
   )

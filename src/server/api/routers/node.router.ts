@@ -78,5 +78,7 @@ export const nodeRouter = createTRPCRouter({
       if (!children) {
         await generateChildren({ prisma: ctx.prisma, id: input.id })
       }
+
+      return true
     }),
 })
