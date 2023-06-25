@@ -69,6 +69,9 @@ export const nodeRouter = createTRPCRouter({
         where: {
           parentId: input.id,
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
       })
       const children = map(childrenRaw, (child) => ({
         ...child,
