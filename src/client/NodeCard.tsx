@@ -18,7 +18,11 @@ export const NodeCard = ({
       {isCurrent && (
         <div className="text-xs opacity-80">Your current items</div>
       )}
-      <div className="font-bold">{node?.metadata.title}</div>
+      <div className="flex flex-row gap-2">
+        <div className="flex-1 font-bold">{node?.metadata.title}</div>
+        {isLoading && <div className="text-xs">...</div>}
+        {!!error && <div className="text-xs">X</div>}
+      </div>
       <div className="text-xs italic opacity-80">
         {node?.metadata.description}
       </div>
@@ -31,9 +35,6 @@ export const NodeCard = ({
           >
             Trade
           </Link>
-          <div className="flex-1 " />
-          {isLoading && <div className="text-xs">...</div>}
-          {!!error && <div className="text-xs">X</div>}
         </div>
       )}
     </div>
