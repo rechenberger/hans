@@ -17,11 +17,26 @@ export const NodeCard = ({
       id: node.id,
     },
     {
+      staleTime: Infinity,
       onSuccess: () => {
         trpc.node.getChildren.invalidate()
       },
     }
   )
+
+  const { data: imageUrlLazy } = api.node.getImageUrl.useQuery(
+    {
+      id: node.id,
+    },
+    {
+      staleTime: Infinity,
+      onSuccess: () => {
+        trpc.node.getChildren.invalidate()
+      },
+    }
+  )
+
+  const imageUrl = node.metadata.imageUrl || imageUrlLazy
 
   return (
     <div className="group flex flex-col rounded bg-white/20 p-2">
@@ -42,10 +57,10 @@ export const NodeCard = ({
           </Link>
         </div>
       </div>
-      {!!node?.metadata.imageUrl && (
+      {!!imageUrl && (
         <div className="-mx-2 my-2">
           <Image
-            src={node.metadata.imageUrl}
+            src={imageUrl}
             className="w-full"
             alt={node.metadata.imageDescription || node.metadata.description}
             title={node.metadata.imageDescription || node.metadata.description}

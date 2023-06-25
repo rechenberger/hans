@@ -1,6 +1,7 @@
 import { flatMap, map } from 'lodash-es'
 import { z } from 'zod'
 import { DEFAULT_START_NODE } from '~/config'
+import { generateImage } from '~/server/ai/generateImage'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 import { generateChildren } from '~/server/lib/generateChildren'
 import { getNode } from '~/server/lib/getNode'
@@ -104,5 +105,36 @@ export const nodeRouter = createTRPCRouter({
       }
 
       return true
+    }),
+
+  getImageUrl: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const node = await getNode({ prisma: ctx.prisma, id: input.id })
+      if (node.metadata.imageUrl) {
+        return node.metadata.imageUrl
+      }
+      if (!node.metadata.imageDescription) {
+        return null
+      }
+      const imageUrl = await generateImage({
+        prompt: node.metadata.imageDescription,
+      })
+      await ctx.prisma.node.update({
+        where: {
+          id: node.id,
+        },
+        data: {
+          metadata: {
+            ...node.metadata,
+            imageUrl,
+          } satisfies NodeMetadata,
+        },
+      })
+      return imageUrl
     }),
 })

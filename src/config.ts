@@ -4,3 +4,5 @@ export const DEFAULT_START_NODE = {
 }
 
 export const DEFAULT_SYSTEM_MESSAGE = `The user is playing a video game. The player sends you the item they have in their inventory. You will give the player 3 choices of what to trade the item for. It should be a reasonable trade with roughly equal value. Use the GenerateOptions function.`
+
+export const GENERATE_IMAGES_ASAP = false
