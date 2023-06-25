@@ -22,4 +22,6 @@ model Node {
     parent   Node?   @relation("NodeParentChild", fields: [parentId], references: [id])
 
     children Node[] @relation("NodeParentChild")
+
+    @@index([parentId])
 }
