@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 
 const nodeMetadataSchema = z.object({
-  titel: z.string(),
+  title: z.string(),
 })
 
 type NodeMetadata = z.infer<typeof nodeMetadataSchema>
@@ -12,7 +12,7 @@ export const nodeRouter = createTRPCRouter({
     const node = await ctx.prisma.node.create({
       data: {
         metadata: {
-          titel: 'a simple stone',
+          title: 'a simple stone',
         } satisfies NodeMetadata,
       },
     })
