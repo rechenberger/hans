@@ -101,7 +101,10 @@ export const generateChildren = async ({
 
     await prisma.node.createMany({
       data: items.map((item) => ({
-        metadata: nodeMetadataSchema.parse(item),
+        metadata: {
+          ...nodeMetadataSchema.parse(item),
+          systemMessage: node.metadata.systemMessage,
+        },
         parentId: node.id,
       })),
     })
