@@ -37,6 +37,9 @@ export const NodeCard = ({
       <div className="text-xs italic opacity-80">
         {node?.metadata.description}
       </div>
+      <div className="text-xs italic opacity-80">
+        {node?.metadata.imageDescription}
+      </div>
       <div className="flex-1" />
       {!isCurrent && (
         <div className="mt-2 flex flex-row items-center gap-2">

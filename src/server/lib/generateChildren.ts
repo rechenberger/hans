@@ -52,8 +52,12 @@ export const generateChildren = async ({
                     },
                     description: {
                       type: 'string',
+                      description: 'A short description of the next option',
+                    },
+                    imageDescription: {
+                      type: 'string',
                       description:
-                        'A very short description of the next option',
+                        'Short image description of the next option. like "a cat sitting on a table"',
                     },
                   },
                 },
@@ -71,12 +75,7 @@ export const generateChildren = async ({
     // console.log({ message })
 
     const schema = z.object({
-      items: z.array(
-        z.object({
-          title: z.string(),
-          description: z.string(),
-        })
-      ),
+      items: z.array(nodeMetadataSchema),
     })
 
     if (!message.function_call) {
@@ -96,8 +95,7 @@ export const generateChildren = async ({
     }
 
     const { items } = schema.parse(JSON.parse(message.function_call.arguments))
-
-    console.log({ items })
+    console.log(items)
 
     await prisma.node.createMany({
       data: items.map((item) => ({
