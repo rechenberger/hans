@@ -57,7 +57,7 @@ export const NodeCard = ({
         <div className="flex-1 truncate font-bold" title={node?.metadata.title}>
           {node?.metadata.title}
         </div>
-        <div className="mx-1 flex shrink-0 flex-row gap-1">
+        <div className="my-1 flex shrink-0 flex-row gap-1">
           {isLoading && <Loader2 className="h-4 w-4 animate-spin opacity-50" />}
           {!!error && (
             <div className="text-xs text-red-500" title={error.message}>
@@ -66,7 +66,7 @@ export const NodeCard = ({
           )}
           {showCustomize && (
             <Link
-              className="-mx-1 flex flex-row gap-0.5 rounded px-2 py-1 text-xs opacity-50  hover:bg-white/20 hover:opacity-100"
+              className="-my-1 flex flex-row gap-0.5 rounded px-2 py-1 text-xs opacity-50  hover:bg-white/20 hover:opacity-100"
               href={`/custom?templateId=${node.id}`}
             >
               <Edit className="h-4 w-4" />
