@@ -34,7 +34,9 @@ export default function Page() {
             <h3 className="text-2xl font-bold">Custom →</h3>
           </Link>
         </div> */}
-        <div className="text-xl text-white">Featured</div>
+        {!!starters?.featured?.length && (
+          <div className="text-xl text-white">Featured</div>
+        )}
         <div className="grid w-full max-w-5xl grid-cols-2 gap-2 md:grid-cols-3">
           {starters?.featured.map((node) => (
             <NodeCard
@@ -45,7 +47,9 @@ export default function Page() {
             />
           ))}
         </div>
-        <div className="text-xl text-white">Community</div>
+        {!!starters?.community?.length && (
+          <div className="text-xl text-white">Community</div>
+        )}
         <div className="grid w-full max-w-5xl grid-cols-2 gap-2 md:grid-cols-3">
           {starters?.community.map((node) => (
             <NodeCard
