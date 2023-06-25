@@ -39,7 +39,7 @@ export default function Page() {
               {node?.metadata.description}
             </div>
             <button
-              className="rounded bg-black/20 px-2 py-1"
+              className="rounded bg-black/20 px-2 py-1 text-sm"
               onClick={() => {
                 if (!node) return
                 generateChildren({
@@ -51,7 +51,7 @@ export default function Page() {
             </button>
           </div>
           <hr className="w-full border-t-black/20" />
-          <div className="flex flex-row gap-2">
+          <div className="grid grid-cols-3 gap-2">
             {children?.map((child) => (
               <div
                 key={child.id}
@@ -61,8 +61,9 @@ export default function Page() {
                 <div className="text-xs italic opacity-80">
                   {child?.metadata.description}
                 </div>
+                <div className="flex-1" />
                 <Link
-                  className="rounded bg-black/20 px-2 py-1"
+                  className="rounded bg-black/20 px-2 py-1 text-sm"
                   href={`/${child.id}`}
                 >
                   Trade
