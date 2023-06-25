@@ -27,7 +27,7 @@ export default function Page() {
   return (
     <>
       <Head>
-        <title>{title ? `${title} | Hans` : 'Hans'}</title>
+        <title>{title ? `${title} | Hans AI` : 'Hans AI'}</title>
         <link rel="icon" href="/hanns.png" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-cyan-500 to-amber-600">

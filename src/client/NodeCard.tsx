@@ -48,6 +48,7 @@ export const NodeCard = ({
             src={node.metadata.imageUrl}
             className="w-full"
             alt={node.metadata.imageDescription || node.metadata.description}
+            title={node.metadata.imageDescription || node.metadata.description}
             width={256}
             height={256}
             unoptimized
