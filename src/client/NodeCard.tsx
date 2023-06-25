@@ -2,6 +2,7 @@ import { ArrowRight, Edit, Loader2, Star } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { type ReactNode } from 'react'
+import { env } from '~/env.mjs'
 import { api, type RouterOutputs } from '~/utils/api'
 
 type Node = RouterOutputs['node']['get']
@@ -57,7 +58,7 @@ export const NodeCard = ({
     },
   })
 
-  const showSetFeatured = false
+  const showSetFeatured = env.NEXT_PUBLIC_DEV_MODE
 
   return (
     <div className="group flex flex-col rounded bg-white/20 p-2">
