@@ -29,7 +29,7 @@ export const generateImage = async ({
 
   const supabaseResponse = await supabase.storage
     .from('images')
-    .upload(`${id}.png`, buffer, { contentType: 'image/png' })
+    .upload(`${id}.png`, buffer, { contentType: 'image/png', upsert: true })
 
   if (supabaseResponse.error) {
     throw new Error(supabaseResponse.error.message)
