@@ -1,3 +1,4 @@
+import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { api, type RouterOutputs } from '~/utils/api'
 
@@ -18,9 +19,9 @@ export const NodeCard = ({
       {isCurrent && (
         <div className="text-xs opacity-80">Your current items</div>
       )}
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row items-center gap-2">
         <div className="flex-1 font-bold">{node?.metadata.title}</div>
-        {isLoading && <div className="animate-pulse text-xs">...</div>}
+        {isLoading && <Loader2 className="h-4 w-4 animate-spin opacity-50" />}
         {!!error && (
           <div className="text-red text-xs" title={error.message}>
             X

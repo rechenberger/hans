@@ -20,6 +20,7 @@ specifiers:
   eslint: ^8.40.0
   eslint-config-next: ^13.4.2
   lodash-es: ^4.17.21
+  lucide-react: ^0.252.0
   next: ^13.4.2
   openai: ^3.3.0
   postcss: ^8.4.21
@@ -42,6 +43,7 @@ dependencies:
   '@trpc/react-query': 10.32.0_jxhvrakkoh5qnjrrg5nytm7qtu
   '@trpc/server': 10.32.0
   lodash-es: 4.17.21
+  lucide-react: 0.252.0_react@18.2.0
   next: 13.4.7_biqbaboplfbrettd7655fr4n2y
   openai: 3.3.0
   react: 18.2.0
@@ -2050,6 +2052,14 @@ packages:
     dependencies:
       yallist: 4.0.0
     dev: true
+
+  /lucide-react/0.252.0_react@18.2.0:
+    resolution: {integrity: sha512-98hUdm23F3YlC3UN4mzv1FAsWr81YYdxF31cYhm19c51FwOph4dn5B4NjKp45UXBiR1Xx+cKrdmSIZX0ldS8zw==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /merge-stream/2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}
