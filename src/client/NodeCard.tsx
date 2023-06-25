@@ -1,4 +1,5 @@
 import { Edit, Loader2 } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { api, type RouterOutputs } from '~/utils/api'
 
@@ -39,11 +40,20 @@ export const NodeCard = ({
           </Link>
         </div>
       </div>
+      {!!node?.metadata.imageUrl && (
+        <div className="-mx-2 my-2">
+          <Image
+            src={node.metadata.imageUrl}
+            className="w-full"
+            alt={node.metadata.imageDescription || node.metadata.description}
+            width={256}
+            height={256}
+            unoptimized
+          />
+        </div>
+      )}
       <div className="text-xs italic opacity-80">
         {node?.metadata.description}
-      </div>
-      <div className="text-xs italic opacity-80">
-        {node?.metadata.imageDescription}
       </div>
       <div className="flex-1" />
       {!isCurrent && (

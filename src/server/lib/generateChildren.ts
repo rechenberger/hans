@@ -1,6 +1,7 @@
 import { type PrismaClient } from '@prisma/client'
-import { first, pick } from 'lodash-es'
+import { first, map, pick } from 'lodash-es'
 import { z } from 'zod'
+import { generateImage } from '../ai/generateImage'
 import { openai } from '../ai/openai'
 import { getNode } from './getNode'
 import { nodeMetadataSchema } from './nodeMetadataSchema'
@@ -94,13 +95,28 @@ export const generateChildren = async ({
       throw new Error('No function call arguments returned from OpenAI')
     }
 
-    const { items } = schema.parse(JSON.parse(message.function_call.arguments))
-    console.log(items)
+    const { items: options } = schema.parse(
+      JSON.parse(message.function_call.arguments)
+    )
+    console.log(options)
+
+    const optionsWithImages = await Promise.all(
+      map(options, async (option) => {
+        if (!option.imageDescription) return option
+        const url = await generateImage({
+          prompt: option.imageDescription,
+        })
+        return {
+          ...option,
+          imageUrl: url,
+        }
+      })
+    )
 
     await prisma.node.createMany({
-      data: items.map((item) => ({
+      data: optionsWithImages.map((option) => ({
         metadata: {
-          ...nodeMetadataSchema.parse(item),
+          ...nodeMetadataSchema.parse(option),
           systemMessage: node.metadata.systemMessage,
         },
         parentId: node.id,

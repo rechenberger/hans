@@ -10,6 +10,7 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
     NODE_ENV: z.enum(['development', 'test', 'production']),
     OPENAI_API_KEY: z.string(),
+    REPLICATE_API_TOKEN: z.string(),
   },
 
   /**
@@ -29,6 +30,7 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    REPLICATE_API_TOKEN: process.env.REPLICATE_API_TOKEN,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
