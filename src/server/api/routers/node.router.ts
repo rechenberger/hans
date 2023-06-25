@@ -1,15 +1,12 @@
-import { type PrismaClient } from '@prisma/client'
 import { first, map } from 'lodash-es'
 import { z } from 'zod'
 import { openai } from '~/server/ai/openai'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
-
-const nodeMetadataSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-})
-
-type NodeMetadata = z.infer<typeof nodeMetadataSchema>
+import { getNode } from '~/server/lib/getNode'
+import {
+  nodeMetadataSchema,
+  type NodeMetadata,
+} from '~/server/lib/nodeMetadataSchema'
 
 export const nodeRouter = createTRPCRouter({
   start: publicProcedure.mutation(async ({ ctx }) => {
@@ -160,19 +157,3 @@ export const nodeRouter = createTRPCRouter({
       }
     }),
 })
-
-const getNode = async ({
-  prisma,
-  id,
-}: {
-  prisma: PrismaClient
-  id: string
-}) => {
-  const node = await prisma.node.findUniqueOrThrow({
-    where: {
-      id,
-    },
-  })
-
-  return { ...node, metadata: nodeMetadataSchema.parse(node.metadata) }
-}
