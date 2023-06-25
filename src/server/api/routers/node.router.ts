@@ -9,18 +9,22 @@ import {
 } from '~/server/lib/nodeMetadataSchema'
 
 export const nodeRouter = createTRPCRouter({
-  start: publicProcedure.mutation(async ({ ctx }) => {
-    const node = await ctx.prisma.node.create({
-      data: {
-        metadata: {
-          title: 'a simple stone',
-          description: 'a simple gray stone found on the side of the road',
-        } satisfies NodeMetadata,
-      },
-    })
+  start: publicProcedure
+    .input(nodeMetadataSchema.optional())
+    .mutation(async ({ ctx, input }) => {
+      const node = await ctx.prisma.node.create({
+        data: {
+          metadata:
+            input ??
+            ({
+              title: 'a simple stone',
+              description: 'a simple gray stone found on the side of the road',
+            } satisfies NodeMetadata),
+        },
+      })
 
-    return node.id
-  }),
+      return node.id
+    }),
 
   get: publicProcedure
     .input(

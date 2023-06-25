@@ -10,11 +10,9 @@ export const DEFAULT_SYSTEM_MESSAGE = `The user is playing a video game. The pla
 export const generateChildren = async ({
   prisma,
   id,
-  systemMessage = DEFAULT_SYSTEM_MESSAGE,
 }: {
   prisma: PrismaClient
   id: string
-  systemMessage?: string
 }) => {
   const node = await getNode({ prisma, id })
 
@@ -25,7 +23,7 @@ export const generateChildren = async ({
       messages: [
         {
           role: 'system',
-          content: systemMessage,
+          content: node.metadata.systemMessage || DEFAULT_SYSTEM_MESSAGE,
         },
         {
           role: 'user',
