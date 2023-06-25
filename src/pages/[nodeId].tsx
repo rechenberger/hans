@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import { useNode } from '~/client/useNode'
 import { api } from '~/utils/api'
 
@@ -7,7 +8,22 @@ export default function Page() {
 
   const title = node?.metadata.title
 
-  const { mutate: generateChildren } = api.node.generateChildren.useMutation()
+  const trpc = api.useContext()
+
+  const { mutate: generateChildren } = api.node.generateChildren.useMutation({
+    onSuccess: () => {
+      trpc.node.invalidate()
+    },
+  })
+
+  const { data: children } = api.node.getChildren.useQuery(
+    {
+      id: node?.id!,
+    },
+    {
+      enabled: !!node,
+    }
+  )
 
   return (
     <>
@@ -17,10 +33,13 @@ export default function Page() {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-cyan-500 to-amber-600">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <div className="rounded bg-white/20 p-2">
+          <div className="flex flex-col gap-2 rounded bg-white/20 p-2">
             <div className="font-bold">{title}</div>
+            <div className="text-xs italic opacity-80">
+              {node?.metadata.description}
+            </div>
             <button
-              className=""
+              className="rounded bg-black/20 px-2 py-1"
               onClick={() => {
                 if (!node) return
                 generateChildren({
@@ -31,9 +50,29 @@ export default function Page() {
               Generate Children
             </button>
           </div>
-          <pre className="rounded bg-white/20 p-2 text-xs">
+          <hr className="w-full border-t-black/20" />
+          <div className="flex flex-row gap-2">
+            {children?.map((child) => (
+              <div
+                key={child.id}
+                className="flex flex-col gap-2 rounded bg-white/20 p-2"
+              >
+                <div className="font-bold">{child?.metadata.title}</div>
+                <div className="text-xs italic opacity-80">
+                  {child?.metadata.description}
+                </div>
+                <Link
+                  className="rounded bg-black/20 px-2 py-1"
+                  href={`/${child.id}`}
+                >
+                  Trade
+                </Link>
+              </div>
+            ))}
+          </div>
+          {/* <pre className="rounded bg-white/20 p-2 text-xs">
             {JSON.stringify(node, null, 2)}
-          </pre>
+          </pre> */}
         </div>
       </main>
     </>

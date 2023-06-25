@@ -1,5 +1,5 @@
 import { type PrismaClient } from '@prisma/client'
-import { first } from 'lodash-es'
+import { first, map } from 'lodash-es'
 import { z } from 'zod'
 import { openai } from '~/server/ai/openai'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
@@ -34,6 +34,25 @@ export const nodeRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const node = await getNode({ prisma: ctx.prisma, id: input.id })
       return node
+    }),
+
+  getChildren: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const childrenRaw = await ctx.prisma.node.findMany({
+        where: {
+          parentId: input.id,
+        },
+      })
+      const children = map(childrenRaw, (child) => ({
+        ...child,
+        metadata: nodeMetadataSchema.parse(child.metadata),
+      }))
+      return children
     }),
 
   generateChildren: publicProcedure
