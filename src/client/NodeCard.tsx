@@ -64,17 +64,21 @@ export const NodeCard = ({
       {shouldHaveImage && (
         <div className="-mx-2 my-2 aspect-square">
           {!!imageUrl ? (
-            <Image
-              src={imageUrl}
-              className="w-full"
-              alt={node.metadata.imageDescription || node.metadata.description}
-              title={
-                node.metadata.imageDescription || node.metadata.description
-              }
-              width={256}
-              height={256}
-              unoptimized
-            />
+            <Link href={isCurrent ? '#' : `/${node.id}`}>
+              <Image
+                src={imageUrl}
+                className="w-full"
+                alt={
+                  node.metadata.imageDescription || node.metadata.description
+                }
+                title={
+                  node.metadata.imageDescription || node.metadata.description
+                }
+                width={256}
+                height={256}
+                unoptimized
+              />
+            </Link>
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-black/20">
               <Loader2 className="h-4 w-4 animate-spin opacity-50" />
