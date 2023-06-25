@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { NodeCard } from '~/client/NodeCard'
 import { api } from '~/utils/api'
 
 export default function Page() {
@@ -10,6 +11,8 @@ export default function Page() {
       await router.push(`/${data}`)
     },
   })
+
+  const { data: starters } = api.node.getStarters.useQuery()
 
   return (
     <>
@@ -28,6 +31,11 @@ export default function Page() {
           >
             <h3 className="text-2xl font-bold">Start →</h3>
           </button>
+          <div className="grid grid-cols-3 gap-2">
+            {starters?.map((node) => (
+              <NodeCard key={node.id} node={node} isCurrent={false} />
+            ))}
+          </div>
         </div>
       </main>
     </>

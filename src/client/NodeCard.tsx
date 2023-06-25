@@ -47,7 +47,7 @@ export const NodeCard = ({
             className="rounded bg-black/20 px-2 py-1 text-sm"
             href={`/${node.id}`}
           >
-            Trade
+            Pick
           </Link>
         </div>
       )}

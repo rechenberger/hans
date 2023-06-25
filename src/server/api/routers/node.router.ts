@@ -1,4 +1,4 @@
-import { map } from 'lodash-es'
+import { flatMap, map } from 'lodash-es'
 import { z } from 'zod'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 import { generateChildren } from '~/server/lib/generateChildren'
@@ -36,6 +36,30 @@ export const nodeRouter = createTRPCRouter({
       const node = await getNode({ prisma: ctx.prisma, id: input.id })
       return node
     }),
+
+  getStarters: publicProcedure.query(async ({ ctx }) => {
+    const startsRaw = await ctx.prisma.node.findMany({
+      where: {
+        parentId: null,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 12,
+    })
+    const starters = flatMap(startsRaw, (start) => {
+      const parsed = nodeMetadataSchema.safeParse(start.metadata)
+      if (!parsed.success) {
+        return []
+      }
+      const node = {
+        ...start,
+        metadata: parsed.data,
+      }
+      return [node]
+    })
+    return starters
+  }),
 
   getChildren: publicProcedure
     .input(
