@@ -1,6 +1,6 @@
 import { flatMap, map } from 'lodash-es'
 import { z } from 'zod'
-import { DEFAULT_START_NODE } from '~/config'
+import { DEFAULT_START_NODE, DEPRECATION_DATE } from '~/config'
 import { generateImage } from '~/server/ai/generateImage'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 import { generateChildren } from '~/server/lib/generateChildren'
@@ -39,6 +39,9 @@ export const nodeRouter = createTRPCRouter({
       where: {
         parentId: null,
         featured: false,
+        createdAt: {
+          gte: DEPRECATION_DATE,
+        },
       },
       orderBy: {
         createdAt: 'desc',
