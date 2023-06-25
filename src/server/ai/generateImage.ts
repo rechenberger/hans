@@ -25,11 +25,11 @@ export const generateImage = async ({
   }
 
   const fetched = await fetch(url)
-  const blob = await fetched.blob()
+  const buffer = await fetched.arrayBuffer()
 
   const supabaseResponse = await supabase.storage
     .from('images')
-    .upload(`${id}.png`, blob)
+    .upload(`${id}.png`, buffer, { contentType: 'image/png' })
 
   if (supabaseResponse.error) {
     throw new Error(supabaseResponse.error.message)
