@@ -29,7 +29,7 @@ export const NodeCard = ({
         <div className="flex-1 font-bold">{node?.metadata.title}</div>
         {isLoading && <Loader2 className="h-4 w-4 animate-spin opacity-50" />}
         {!!error && (
-          <div className="text-red text-xs" title={error.message}>
+          <div className="text-xs text-red-500" title={error.message}>
             X
           </div>
         )}

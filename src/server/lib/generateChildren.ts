@@ -17,16 +17,18 @@ export const generateChildren = async ({
   try {
     const response = await openai.createChatCompletion({
       model: 'gpt-3.5-turbo-0613',
+      // model: 'gpt-4-0613',
       messages: [
         {
           role: 'system',
-          content: `The user is playing a video game. The player sends you the item they have in their inventory. You will give the player 3 choices of what to trade the item for. It should be a reasonable trade. Use the GenerateItem function.`,
+          content: `The user is playing a video game. The player sends you the item they have in their inventory. You will give the player 3 choices of what to trade the item for. It should be a reasonable trade with roughly equal value. Use the GenerateItem function.`,
         },
         {
           role: 'user',
           content: JSON.stringify(node.metadata),
         },
       ],
+      temperature: 1,
       function_call: 'auto',
       functions: [
         {
