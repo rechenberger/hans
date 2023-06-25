@@ -11,6 +11,8 @@ export const env = createEnv({
     NODE_ENV: z.enum(['development', 'test', 'production']),
     OPENAI_API_KEY: z.string(),
     REPLICATE_API_TOKEN: z.string(),
+    SUPABASE_URL: z.string().url(),
+    SUPABASE_API_KEY: z.string(),
   },
 
   /**
@@ -33,6 +35,8 @@ export const env = createEnv({
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     REPLICATE_API_TOKEN: process.env.REPLICATE_API_TOKEN,
     NEXT_PUBLIC_DEV_MODE: process.env.NEXT_PUBLIC_DEV_MODE === 'true',
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_API_KEY: process.env.SUPABASE_API_KEY,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

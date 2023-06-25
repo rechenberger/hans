@@ -2,7 +2,6 @@ import { type PrismaClient } from '@prisma/client'
 import { first, map, pick } from 'lodash-es'
 import { z } from 'zod'
 import { DEFAULT_SYSTEM_MESSAGE, GENERATE_IMAGES_ASAP } from '~/config'
-import { generateImage } from '../ai/generateImage'
 import { openai } from '../ai/openai'
 import { getNode } from './getNode'
 import { nodeMetadataSchema } from './nodeMetadataSchema'
@@ -118,13 +117,14 @@ export const generateChildren = async ({
     const optionsWithImages = await Promise.all(
       map(options, async (option) => {
         if (!GENERATE_IMAGES_ASAP || !option.imageDescription) return option
-        const url = await generateImage({
-          prompt: option.imageDescription,
-        })
-        return {
-          ...option,
-          imageUrl: url,
-        }
+        // const url = await generateImage({
+        //   prompt: option.imageDescription,
+        //   id: option.id,
+        // })
+        // return {
+        //   ...option,
+        //   imageUrl: url,
+        // }
       })
     )
 
