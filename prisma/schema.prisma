@@ -2,17 +2,24 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
     previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgres"
     url      = env("DATABASE_URL")
 }
 
-model Example {
+model Node {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    metadata Json
+
+    parentId String?
+    parent   Node?   @relation("NodeParentChild", fields: [parentId], references: [id])
+
+    children Node[] @relation("NodeParentChild")
 }
