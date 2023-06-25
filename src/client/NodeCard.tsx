@@ -20,8 +20,12 @@ export const NodeCard = ({
       )}
       <div className="flex flex-row gap-2">
         <div className="flex-1 font-bold">{node?.metadata.title}</div>
-        {isLoading && <div className="text-xs">...</div>}
-        {!!error && <div className="text-xs">X</div>}
+        {isLoading && <div className="animate-pulse text-xs">...</div>}
+        {!!error && (
+          <div className="text-red text-xs" title={error.message}>
+            X
+          </div>
+        )}
       </div>
       <div className="text-xs italic opacity-80">
         {node?.metadata.description}
