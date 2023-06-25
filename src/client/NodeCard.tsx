@@ -1,15 +1,20 @@
 import { Edit, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { type ReactNode } from 'react'
 import { api, type RouterOutputs } from '~/utils/api'
 
 type Node = RouterOutputs['node']['get']
 export const NodeCard = ({
   node,
   isCurrent,
+  tiny,
+  top,
 }: {
   node: Node
   isCurrent: boolean
+  tiny?: boolean
+  top?: ReactNode
 }) => {
   const trpc = api.useContext()
   const { isLoading, error } = api.node.ensureChildren.useQuery(
@@ -44,6 +49,7 @@ export const NodeCard = ({
 
   return (
     <div className="group flex flex-col rounded bg-white/20 p-2">
+      {top}
       {isCurrent && <div className="text-xs opacity-80">Current</div>}
       <div className="flex flex-row items-start gap-2">
         <div className="flex-1 truncate font-bold" title={node?.metadata.title}>
@@ -61,7 +67,7 @@ export const NodeCard = ({
           </Link>
         </div>
       </div>
-      {shouldHaveImage && (
+      {!tiny && shouldHaveImage && (
         <div className="-mx-2 my-2 aspect-square">
           {!!imageUrl ? (
             <Link href={isCurrent ? '#' : `/${node.id}`}>
@@ -86,11 +92,13 @@ export const NodeCard = ({
           )}
         </div>
       )}
-      <div className="text-xs italic opacity-80">
-        {node?.metadata.description}
-      </div>
+      {!tiny && (
+        <div className="text-xs italic opacity-80">
+          {node?.metadata.description}
+        </div>
+      )}
       <div className="flex-1" />
-      {!isCurrent && (
+      {!tiny && !isCurrent && (
         <div className="mt-2 flex flex-row items-center gap-2">
           <Link
             className="rounded bg-black/20 px-2 py-1 text-sm"
