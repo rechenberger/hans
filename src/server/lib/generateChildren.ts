@@ -70,7 +70,7 @@ export const generateChildren = async ({
                         'What happens if the player chooses this option? Continue the story.',
                     },
                   },
-                  required: ['title', 'description'],
+                  required: ['title', 'description', 'descriptionConsequences'],
                 },
               },
             },
