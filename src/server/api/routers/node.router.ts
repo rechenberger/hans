@@ -76,8 +76,23 @@ export const nodeRouter = createTRPCRouter({
           ],
         })
         const message = first(response.data.choices)?.message
+        if (!message) {
+          throw new Error('No message returned from OpenAI')
+        }
 
         console.log({ message })
+
+        const schema = z.object({
+          items: z.array(z.string()),
+        })
+
+        if (!message.content) {
+          throw new Error('No content returned from OpenAI')
+        }
+
+        const { items } = schema.parse(JSON.parse(message.content))
+
+        console.log({ items })
       } catch (error: any) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         const openAIError = error?.response?.data?.error
