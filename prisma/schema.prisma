@@ -18,6 +18,8 @@ model Node {
 
     metadata Json
 
+    featured Boolean @default(false)
+
     parentId String?
     parent   Node?   @relation("NodeParentChild", fields: [parentId], references: [id])
 
