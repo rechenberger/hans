@@ -45,7 +45,16 @@ export const nodeRouter = createTRPCRouter({
 
       const response = await openai.createChatCompletion({
         model: 'gpt-3.5-turbo-0613',
-        messages: [{ role: 'user', content: node.metadata.title }],
+        messages: [
+          {
+            role: 'system',
+            content: `The user is playing a video game. The player has a single item in their inventory: "${node.metadata.title}". You will give the player 3 choices of what to trade the item for. It should be a reasonable trade.`,
+          },
+          // {
+          //   role: 'user',
+          //   content: `${node.metadata.title}`,
+          // },
+        ],
         // function_call: 'auto',
       })
 
