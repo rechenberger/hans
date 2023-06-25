@@ -97,7 +97,7 @@ export const NodeCard = ({
           {node?.metadata.description}
         </div>
       )}
-      {!tiny && isCurrent && (
+      {!tiny && isCurrent && node?.metadata.descriptionConsequences && (
         <div className="mt-4 flex flex-row gap-1 text-xs italic opacity-80">
           <ArrowRight className="mt-0.5 h-3 w-3 shrink-0" />
           <div>{node?.metadata.descriptionConsequences}</div>
