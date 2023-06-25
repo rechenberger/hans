@@ -24,11 +24,14 @@ export const NodeCard = ({
     }
   )
 
+  const shouldHaveImage = !!node.metadata.imageDescription
+
   const { data: imageUrlLazy } = api.node.getImageUrl.useQuery(
     {
       id: node.id,
     },
     {
+      enabled: shouldHaveImage && !node.metadata.imageUrl,
       staleTime: Infinity,
       onSuccess: () => {
         trpc.node.getChildren.invalidate()
@@ -57,17 +60,25 @@ export const NodeCard = ({
           </Link>
         </div>
       </div>
-      {!!imageUrl && (
-        <div className="-mx-2 my-2">
-          <Image
-            src={imageUrl}
-            className="w-full"
-            alt={node.metadata.imageDescription || node.metadata.description}
-            title={node.metadata.imageDescription || node.metadata.description}
-            width={256}
-            height={256}
-            unoptimized
-          />
+      {shouldHaveImage && (
+        <div className="-mx-2 my-2 aspect-square">
+          {!!imageUrl ? (
+            <Image
+              src={imageUrl}
+              className="w-full"
+              alt={node.metadata.imageDescription || node.metadata.description}
+              title={
+                node.metadata.imageDescription || node.metadata.description
+              }
+              width={256}
+              height={256}
+              unoptimized
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-black/20">
+              <Loader2 className="h-4 w-4 animate-spin opacity-50" />
+            </div>
+          )}
         </div>
       )}
       <div className="text-xs italic opacity-80">
