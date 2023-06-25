@@ -1,5 +1,5 @@
 import { type PrismaClient } from '@prisma/client'
-import { first } from 'lodash-es'
+import { first, pick } from 'lodash-es'
 import { z } from 'zod'
 import { openai } from '../ai/openai'
 import { getNode } from './getNode'
@@ -27,7 +27,9 @@ export const generateChildren = async ({
         },
         {
           role: 'user',
-          content: JSON.stringify(node.metadata),
+          content: JSON.stringify(
+            pick(node.metadata, ['title', 'description'])
+          ),
         },
       ],
       temperature: 1,
