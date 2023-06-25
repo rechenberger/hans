@@ -10,11 +10,13 @@ export const NodeCard = ({
   isCurrent,
   tiny,
   top,
+  showCustomize,
 }: {
   node: Node
   isCurrent: boolean
   tiny?: boolean
   top?: ReactNode
+  showCustomize?: boolean
 }) => {
   const trpc = api.useContext()
   const { isLoading, error } = api.node.ensureChildren.useQuery(
@@ -55,16 +57,22 @@ export const NodeCard = ({
         <div className="flex-1 truncate font-bold" title={node?.metadata.title}>
           {node?.metadata.title}
         </div>
-        <div className="mt-1 flex shrink-0 flex-row gap-1">
+        <div className="mx-1 flex shrink-0 flex-row gap-1">
           {isLoading && <Loader2 className="h-4 w-4 animate-spin opacity-50" />}
           {!!error && (
             <div className="text-xs text-red-500" title={error.message}>
               X
             </div>
           )}
-          <Link className="text-xs" href={`/custom?templateId=${node.id}`}>
-            <Edit className="h-4 w-4 opacity-50 hover:opacity-100" />
-          </Link>
+          {showCustomize && (
+            <Link
+              className="-mx-1 flex flex-row gap-0.5 rounded px-2 py-1 text-xs opacity-50  hover:bg-white/20 hover:opacity-100"
+              href={`/custom?templateId=${node.id}`}
+            >
+              <Edit className="h-4 w-4" />
+              <div>Customize</div>
+            </Link>
+          )}
         </div>
       </div>
       {!tiny && shouldHaveImage && (

@@ -59,7 +59,7 @@ export default function Page() {
           {!!node && (
             <>
               <div className="hidden md:flex" />
-              <NodeCard node={node} isCurrent={true} />
+              <NodeCard node={node} isCurrent={true} showCustomize />
               <div className="hidden md:flex" />
             </>
           )}

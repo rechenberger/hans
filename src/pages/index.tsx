@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { MainLayout } from '~/client/MainLayout'
 import { NodeCard } from '~/client/NodeCard'
@@ -21,7 +20,7 @@ export default function Page() {
         <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
           Hans AI
         </h1>
-        <div className="flex flex-row gap-4">
+        {/* <div className="flex flex-row gap-4">
           <button
             onClick={() => start()}
             className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
@@ -34,10 +33,15 @@ export default function Page() {
           >
             <h3 className="text-2xl font-bold">Custom →</h3>
           </Link>
-        </div>
+        </div> */}
         <div className="grid w-full max-w-5xl grid-cols-2 gap-2 md:grid-cols-3">
           {starters?.map((node) => (
-            <NodeCard key={node.id} node={node} isCurrent={false} />
+            <NodeCard
+              key={node.id}
+              node={node}
+              isCurrent={false}
+              showCustomize
+            />
           ))}
         </div>
       </MainLayout>

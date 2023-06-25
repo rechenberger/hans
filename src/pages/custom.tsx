@@ -43,6 +43,7 @@ export default function Page() {
             className="border bg-transparent p-2"
             defaultValue={template?.metadata.systemMessage}
             rows={10}
+            required
           />
         </label>
         <label className="flex flex-col">
