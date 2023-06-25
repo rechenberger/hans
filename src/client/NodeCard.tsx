@@ -97,7 +97,7 @@ export const NodeCard = ({
               href={`/custom?templateId=${node.id}`}
             >
               <Edit className="h-4 w-4" />
-              <div>Customize</div>
+              <div className="hidden xl:block">Customize</div>
             </Link>
           )}
         </div>
