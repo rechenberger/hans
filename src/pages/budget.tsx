@@ -17,7 +17,7 @@ export default function Page() {
           <Fragment key={key}>
             <div>{key}</div>
             <div className="font-bold text-cyan-400">
-              {budget.costsInTeamTokens} TTs
+              {budget.costsInTeamTokens?.toLocaleString() || 0} TTs
             </div>
           </Fragment>
         ))}

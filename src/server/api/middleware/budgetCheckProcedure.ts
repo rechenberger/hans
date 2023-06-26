@@ -21,7 +21,7 @@ export const budgetCheckProcedure = publicProcedure.use(
         alreadySentDiscordMessage = true
         try {
           await sendDiscordMessage({
-            content: `Hans AI is over budget! Used ${usedTeamTokens} of ${env.TEAMTOKEN_BUDGET} team tokens.`,
+            content: `Hans AI is over budget! Used ${usedTeamTokens?.toLocaleString()} of ${env.TEAMTOKEN_BUDGET?.toLocaleString()} team tokens.`,
           })
         } catch (error) {
           alreadySentDiscordMessage = false
