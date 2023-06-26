@@ -153,9 +153,9 @@ export const nodeRouter = createTRPCRouter({
       if (!imageDescription) {
         return null
       }
-      const imageUrl = await generateImage({
+      const { imageUrl, billable } = await generateImage({
         prompt: imageDescription,
-        id: node.id,
+        nodeId: node.id,
       })
       await ctx.prisma.node.update({
         where: {
@@ -166,6 +166,9 @@ export const nodeRouter = createTRPCRouter({
             ...node.metadata,
             imageUrl,
           } satisfies NodeMetadata,
+          billables: {
+            create: billable,
+          },
         },
       })
       return imageUrl

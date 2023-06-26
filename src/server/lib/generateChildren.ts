@@ -3,6 +3,7 @@ import { first, map, pick } from 'lodash-es'
 import { z } from 'zod'
 import { DEFAULT_SYSTEM_MESSAGE, GENERATE_IMAGES_ASAP } from '~/config'
 import { openai } from '../ai/openai'
+import { calcBillable } from './BillableApiData'
 import { getNode } from './getNode'
 import { nodeMetadataSchema } from './nodeMetadataSchema'
 
@@ -13,11 +14,13 @@ export const generateChildren = async ({
   prisma: PrismaClient
   id: string
 }) => {
+  const model = 'gpt-3.5-turbo-0613'
+  // const model = 'gpt-4-0613'
   const node = await getNode({ prisma, id })
 
   try {
     const response = await openai.createChatCompletion({
-      model: 'gpt-3.5-turbo-0613',
+      model,
       // model: 'gpt-4-0613',
       messages: [
         {
@@ -136,6 +139,23 @@ export const generateChildren = async ({
         },
         parentId: node.id,
       })),
+    })
+
+    const usage = response.data.usage
+    if (!usage) throw new Error('No usage returned from OpenAI')
+    const billable = calcBillable({
+      billableApiData: {
+        service: 'openai',
+        model,
+        ...usage,
+      },
+    })
+
+    await prisma.billable.create({
+      data: {
+        ...billable,
+        nodeId: node.id,
+      },
     })
   } catch (error: any) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
