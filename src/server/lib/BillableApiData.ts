@@ -1,5 +1,6 @@
+import { type Billable, type BillableType } from '@prisma/client'
+import { env } from '~/env.mjs'
 import { type OpenAIModel } from '../ai/openai'
-const DEFAULT_TEAMTOKEN_PER_UPSTREAM_CENT = 50
 
 export type BillableApiData =
   | {
@@ -112,7 +113,7 @@ export const calcCostsInTeamTokens = ({
   upstreamCostsInCents: number
 }) => {
   const costsInTeamTokens = Math.ceil(
-    upstreamCostsInCents * DEFAULT_TEAMTOKEN_PER_UPSTREAM_CENT
+    upstreamCostsInCents * env.DEFAULT_TEAMTOKEN_PER_UPSTREAM_CENT
   )
   return costsInTeamTokens
 }
@@ -126,8 +127,20 @@ export const calcBillable = ({
   const costsInTeamTokens = calcCostsInTeamTokens({
     upstreamCostsInCents,
   })
+  let billableType: BillableType
+  if (billableApiData.service === 'openai') {
+    billableType = 'OPENAI_CHAT_COMPLETION'
+  } else if (billableApiData.service === 'replicate') {
+    billableType = 'REPLICATE_IMAGE_GENERATION'
+  } else {
+    // @ts-expect-error billableApiData is `never` because of the exhaustive check above
+    throw new Error(`Unknown service ${billableApiData.service}}`)
+  }
+
   return {
     upstreamCostsInCents,
     costsInTeamTokens,
-  }
+    billableType,
+    apiData: billableApiData,
+  } satisfies Omit<Billable, 'id' | 'updatedAt' | 'createdAt' | 'nodeId'>
 }

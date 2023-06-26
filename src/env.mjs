@@ -13,6 +13,7 @@ export const env = createEnv({
     REPLICATE_API_TOKEN: z.string(),
     SUPABASE_URL: z.string().url(),
     SUPABASE_API_KEY: z.string(),
+    DEFAULT_TEAMTOKEN_PER_UPSTREAM_CENT: z.number().min(1),
   },
 
   /**
@@ -37,6 +38,9 @@ export const env = createEnv({
     NEXT_PUBLIC_DEV_MODE: process.env.NEXT_PUBLIC_DEV_MODE === 'true',
     SUPABASE_URL: process.env.SUPABASE_URL,
     SUPABASE_API_KEY: process.env.SUPABASE_API_KEY,
+    DEFAULT_TEAMTOKEN_PER_UPSTREAM_CENT: parseInt(
+      process.env.DEFAULT_TEAMTOKEN_PER_UPSTREAM_CENT || '0'
+    ),
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
