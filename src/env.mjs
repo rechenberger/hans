@@ -15,6 +15,7 @@ export const env = createEnv({
     SUPABASE_API_KEY: z.string(),
     NEXT_PUBLIC_SUPABASE_API_KEY_PUBLIC: z.string(),
     DEFAULT_TEAMTOKEN_PER_UPSTREAM_CENT: z.number().min(1),
+    TEAMTOKEN_BUDGET: z.number(),
   },
 
   /**
@@ -44,6 +45,7 @@ export const env = createEnv({
     ),
     NEXT_PUBLIC_SUPABASE_API_KEY_PUBLIC:
       process.env.NEXT_PUBLIC_SUPABASE_API_KEY_PUBLIC,
+    TEAMTOKEN_BUDGET: parseInt(process.env.TEAMTOKEN_BUDGET || '0'),
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

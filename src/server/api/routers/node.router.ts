@@ -11,6 +11,7 @@ import {
   nodeMetadataSchema,
   type NodeMetadata,
 } from '~/server/lib/nodeMetadataSchema'
+import { budgetCheckProcedure } from '../middleware/budgetCheckProcedure'
 
 export const nodeRouter = createTRPCRouter({
   start: publicProcedure
@@ -109,7 +110,7 @@ export const nodeRouter = createTRPCRouter({
       return children
     }),
 
-  generateChildren: publicProcedure
+  generateChildren: budgetCheckProcedure
     .input(
       z.object({
         id: z.string(),
@@ -119,7 +120,7 @@ export const nodeRouter = createTRPCRouter({
       await generateChildren({ prisma: ctx.prisma, id: input.id })
     }),
 
-  ensureChildren: publicProcedure
+  ensureChildren: budgetCheckProcedure
     .input(
       z.object({
         id: z.string(),
@@ -139,7 +140,7 @@ export const nodeRouter = createTRPCRouter({
       return true
     }),
 
-  getImageUrl: publicProcedure
+  getImageUrl: budgetCheckProcedure
     .input(
       z.object({
         id: z.string(),
