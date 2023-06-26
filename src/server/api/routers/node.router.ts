@@ -1,6 +1,8 @@
+import { TRPCError } from '@trpc/server'
 import { flatMap, map } from 'lodash-es'
 import { z } from 'zod'
 import { DEFAULT_START_NODE, DEPRECATION_DATE } from '~/config'
+import { env } from '~/env.mjs'
 import { generateImage } from '~/server/ai/generateImage'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 import { generateChildren } from '~/server/lib/generateChildren'
@@ -182,6 +184,11 @@ export const nodeRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      if (!env.NEXT_PUBLIC_DEV_MODE) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+        })
+      }
       await ctx.prisma.node.update({
         where: {
           id: input.id,
