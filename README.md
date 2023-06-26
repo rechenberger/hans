@@ -1,3 +1,7 @@
-# Hans
+# Hans AI
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+https://hans.rechenberger.io
+
+Customizable AI generated Multiple Choice Adventures
+
+powered by [Teampilot AI](https://teampilot.ai/)
