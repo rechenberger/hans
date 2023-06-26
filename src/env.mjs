@@ -16,6 +16,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SUPABASE_API_KEY_PUBLIC: z.string(),
     DEFAULT_TEAMTOKEN_PER_UPSTREAM_CENT: z.number().min(1),
     TEAMTOKEN_BUDGET: z.number(),
+    DISCORD_WEBHOOK_URL: z.string().url(),
   },
 
   /**
@@ -46,6 +47,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SUPABASE_API_KEY_PUBLIC:
       process.env.NEXT_PUBLIC_SUPABASE_API_KEY_PUBLIC,
     TEAMTOKEN_BUDGET: parseInt(process.env.TEAMTOKEN_BUDGET || '0'),
+    DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
