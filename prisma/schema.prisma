@@ -23,9 +23,29 @@ model Node {
     parentId String?
     parent   Node?   @relation("NodeParentChild", fields: [parentId], references: [id])
 
-    children Node[] @relation("NodeParentChild")
+    children  Node[]     @relation("NodeParentChild")
+    billables Billable[]
 
     @@index([parentId])
     @@index([featured, createdAt])
     @@index([parentId, featured, createdAt])
+}
+
+model Billable {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    upstreamCostsInCents Float
+    costsInTeamTokens    Int
+    apiData              Json
+    billableType         BillableType
+
+    nodeId String
+    node   Node   @relation(fields: [nodeId], references: [id])
+}
+
+enum BillableType {
+    OPENAI_CHAT_COMPLETION
+    REPLICATE_IMAGE_GENERATION
 }
