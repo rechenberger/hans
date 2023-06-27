@@ -14,7 +14,7 @@ export const generateChildren = async ({
   prisma: PrismaClient
   id: string
 }) => {
-  const model = 'gpt-3.5-turbo-0613'
+  const model = 'gpt-3.5-turbo-16k'
   // const model = 'gpt-4-0613'
   const node = await getNode({ prisma, id })
 
